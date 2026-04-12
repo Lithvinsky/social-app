@@ -1,0 +1,14 @@
+{
+  "name": "social-app",
+  "private": true,
+  "description": "Social app — run backend + frontend together for local development",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "start:api": "npm start --prefix backend",
+    "build:web": "npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

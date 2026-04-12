@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen text-orbit-ink antialiased;
+    background-color: #f3efff;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.9), transparent),
+      radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.45), transparent),
+      radial-gradient(2px 2px at 33% 90%, rgba(255, 255, 255, 0.55), transparent),
+      radial-gradient(1px 1px at 10% 80%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(ellipse 120% 90% at 50% -25%, rgba(199, 184, 255, 0.75) 0%, transparent 50%),
+      linear-gradient(
+        168deg,
+        #ddd4ff 0%,
+        #e8e0ff 18%,
+        #f5f2ff 42%,
+        #faf8ff 72%,
+        #ffffff 100%
+      );
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-[1.35rem] border border-white/60 bg-white/65 backdrop-blur-xl shadow-card;
+  }
+
+  .glass-panel-strong {
+    @apply rounded-[1.35rem] border border-white/70 bg-white/80 backdrop-blur-xl shadow-orbit;
+  }
+
+  /** Top bar: solid theme chrome (no see-through drift over the starfield). */
+  .glass-header {
+    @apply border-b border-surface-muted bg-surface shadow-nav;
+  }
+
+  .input-orbit {
+    @apply rounded-2xl border border-white/80 bg-white/90 text-orbit-ink placeholder:text-orbit-muted/70 px-3 py-2 text-sm shadow-inner shadow-white/20 focus:border-brand-muted focus:ring-2 focus:ring-lavender-light/50 outline-none transition;
+  }
+
+  /** Login / register — high-contrast fields */
+  .input-auth {
+    @apply w-full rounded-2xl border-2 border-brand/25 bg-white text-orbit-ink text-base px-4 py-3.5 shadow-sm;
+    @apply placeholder:text-orbit-muted/60;
+    @apply transition-[border-color,box-shadow] duration-200;
+    @apply hover:border-brand/40;
+    @apply focus:border-brand focus:ring-4 focus:ring-brand/15 focus:outline-none;
+  }
+}
