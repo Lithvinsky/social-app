@@ -7,6 +7,7 @@ import { configureCloudinary } from "./utils/cloudinary.js";
 
 const PORT = Number(process.env.PORT) || 5050;
 const MONGO_URI = process.env.MONGO_URI;
+const LISTEN_HOST = "0.0.0.0";
 
 if (!MONGO_URI) {
   console.error("MONGO_URI is required");
@@ -31,6 +32,6 @@ server.on("error", (err) => {
   throw err;
 });
 
-server.listen(PORT, () => {
-  console.log(`API listening on http://localhost:${PORT}`);
+server.listen(PORT, LISTEN_HOST, () => {
+  console.log(`API listening on http://${LISTEN_HOST}:${PORT}`);
 });
