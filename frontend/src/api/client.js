@@ -2,11 +2,21 @@ import axios from "axios";
 import { store } from "../store/index.js";
 import { clearAuth, setAccessToken } from "../store/authSlice.js";
 
-const baseURL =
-  import.meta.env.VITE_API_BASE?.replace(/\/$/, "") || "/api";
+// FIXED: updated API base URL to correct Render backend
+const API_ORIGIN = (
+  import.meta.env.VITE_API_URL || "https://social-app-5sgz.onrender.com"
+).replace(/\/$/, "");
+
+export function buildApiUrl(path = "") {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${API_ORIGIN}/api${normalized}`;
+}
+
+const AUTH_LOGIN_URL = buildApiUrl("/auth/login");
+const AUTH_REGISTER_URL = buildApiUrl("/auth/register");
+const AUTH_REFRESH_URL = buildApiUrl("/auth/refresh");
 
 export const client = axios.create({
-  baseURL,
   withCredentials: true,
 });
 
@@ -39,15 +49,15 @@ client.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !original._retry &&
-      !url.includes("/auth/login") &&
-      !url.includes("/auth/register") &&
-      !url.includes("/auth/refresh")
+      !url.includes(AUTH_LOGIN_URL) &&
+      !url.includes(AUTH_REGISTER_URL) &&
+      !url.includes(AUTH_REFRESH_URL)
     ) {
       original._retry = true;
       try {
         if (!refreshPromise) {
           refreshPromise = client
-            .post("/auth/refresh")
+            .post(AUTH_REFRESH_URL)
             .then((r) => {
               const next = r.data?.data?.accessToken;
               if (next) {
