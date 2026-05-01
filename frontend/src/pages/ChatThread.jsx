@@ -74,6 +74,8 @@ export default function ChatThread() {
       if (res?.ok) {
         qc.invalidateQueries({ queryKey: ["conversations", "unread-total"] });
         qc.invalidateQueries({ queryKey: ["conversations"] });
+        qc.invalidateQueries({ queryKey: ["notifications", "unread"] });
+        qc.invalidateQueries({ queryKey: ["notifications"] });
       }
     });
 
@@ -88,6 +90,7 @@ export default function ChatThread() {
         return { ...old, items: [...(old.items || []), msg] };
       });
       qc.invalidateQueries({ queryKey: ["conversations"] });
+      qc.invalidateQueries({ queryKey: ["notifications", "unread"] });
     }
 
     function onTyping({ conversationId: cid, userId, isTyping }) {

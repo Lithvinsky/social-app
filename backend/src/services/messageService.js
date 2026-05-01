@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Message } from "../models/Message.js";
 import { Conversation } from "../models/Conversation.js";
+import { Notification } from "../models/Notification.js";
 import { createNotification } from "./notificationService.js";
 import { getIo } from "../socket/ioRegistry.js";
 import { AppError } from "../utils/errors.js";
@@ -62,14 +63,27 @@ export async function createMessage({ conversationId, senderId, content }) {
 }
 
 export async function markMessagesRead(conversationId, userId) {
-  await Message.updateMany(
-    {
-      conversation: new mongoose.Types.ObjectId(conversationId),
-      sender: { $ne: userId },
-      readBy: { $ne: userId },
-    },
-    { $addToSet: { readBy: userId } }
-  );
+  const conversationObjectId = new mongoose.Types.ObjectId(conversationId);
+
+  await Promise.all([
+    Message.updateMany(
+      {
+        conversation: conversationObjectId,
+        sender: { $ne: userId },
+        readBy: { $ne: userId },
+      },
+      { $addToSet: { readBy: userId } }
+    ),
+    Notification.updateMany(
+      {
+        recipient: userId,
+        type: "message",
+        conversation: conversationObjectId,
+        read: false,
+      },
+      { $set: { read: true } }
+    ),
+  ]);
 
   const conv = await Conversation.findById(conversationId);
   if (conv) {

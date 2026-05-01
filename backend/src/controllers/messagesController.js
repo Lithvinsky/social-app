@@ -2,7 +2,11 @@ import { Message } from "../models/Message.js";
 import { AppError } from "../utils/errors.js";
 import { sendOk } from "../utils/response.js";
 import { asyncHandler } from "../middleware/asyncHandler.js";
-import { assertParticipant, createMessage } from "../services/messageService.js";
+import {
+  assertParticipant,
+  createMessage,
+  markMessagesRead,
+} from "../services/messageService.js";
 
 export const listMessages = asyncHandler(async (req, res) => {
   const { conversationId } = req.params;
@@ -13,6 +17,7 @@ export const listMessages = asyncHandler(async (req, res) => {
   );
   const conv = await assertParticipant(conversationId, req.userId);
   if (!conv) throw new AppError("Conversation not found", 404);
+  await markMessagesRead(conversationId, req.userId);
 
   const skip = (page - 1) * limit;
   const [items, total] = await Promise.all([
