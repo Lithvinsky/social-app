@@ -116,27 +116,29 @@ export default function ChatThread() {
   function send() {
     const content = text.trim();
     if (!content || !conversationId) return;
-    if (socket) {
-      socket.emit(
+    if (socket?.connected) {
+      socket.timeout(4000).emit(
         "send_message",
         { conversationId, content },
-        (res) => {
-          socket.emit("typing", { conversationId, isTyping: false });
-          if (res?.ok && res.message) {
-            setText("");
-            qc.setQueryData(["messages", conversationId], (old) => {
-              if (!old) return old;
-              const exists = old.items?.some(
-                (m) => String(m._id) === String(res.message._id),
-              );
-              if (exists) return old;
-              return { ...old, items: [...(old.items || []), res.message] };
-            });
-            qc.invalidateQueries({ queryKey: ["conversations"] });
-            qc.invalidateQueries({
-              queryKey: ["conversations", "unread-total"],
-            });
+        (err, res) => {
+          if (err || !res?.ok || !res?.message) {
+            sendRestMut.mutate(content);
+            return;
           }
+          socket.emit("typing", { conversationId, isTyping: false });
+          setText("");
+          qc.setQueryData(["messages", conversationId], (old) => {
+            if (!old) return old;
+            const exists = old.items?.some(
+              (m) => String(m._id) === String(res.message._id),
+            );
+            if (exists) return old;
+            return { ...old, items: [...(old.items || []), res.message] };
+          });
+          qc.invalidateQueries({ queryKey: ["conversations"] });
+          qc.invalidateQueries({
+            queryKey: ["conversations", "unread-total"],
+          });
         },
       );
       return;
