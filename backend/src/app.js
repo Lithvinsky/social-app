@@ -54,14 +54,21 @@ export function createApp() {
   app.use(limiter);
 
   app.get("/health", (_req, res) => res.json({ ok: true }));
+  app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
-  app.use("/auth", authRoutes);
-  app.use("/users", userRoutes);
-  app.use("/posts", postRoutes);
-  app.use("/comments", commentRoutes);
-  app.use("/conversations", conversationRoutes);
-  app.use("/messages", messageRoutes);
-  app.use("/notifications", notificationRoutes);
+  const mountApiRoutes = (prefix = "") => {
+    app.use(`${prefix}/auth`, authRoutes);
+    app.use(`${prefix}/users`, userRoutes);
+    app.use(`${prefix}/posts`, postRoutes);
+    app.use(`${prefix}/comments`, commentRoutes);
+    app.use(`${prefix}/conversations`, conversationRoutes);
+    app.use(`${prefix}/messages`, messageRoutes);
+    app.use(`${prefix}/notifications`, notificationRoutes);
+  };
+
+  // Support both direct backend paths and /api-prefixed frontend paths.
+  mountApiRoutes("");
+  mountApiRoutes("/api");
 
   app.use((_req, _res, next) => {
     next(new AppError("Not found", 404));

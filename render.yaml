@@ -1,7 +1,7 @@
 # Render.com Blueprint: API (Web) + static frontend
 #
 # - In Render, set the repo *Root directory* to `social-app` if this lives in a monorepo.
-# - Deploy the API first, then set the static site build env (VITE_API_BASE, VITE_SOCKET_URL)
+# - Deploy the API first, then set the static site build env (VITE_API_URL, VITE_SOCKET_URL)
 #   to your public API URL (no trailing slash), and redeploy the static site.
 # - Use MongoDB Atlas for MONGO_URI; use Atlas + optional Cloudinary for file uploads on Render.
 
@@ -45,7 +45,7 @@ services:
     staticPublishPath: dist
     autoDeploy: true
     envVars:
-      - key: VITE_API_BASE
+      - key: VITE_API_URL
         sync: false
       - key: VITE_SOCKET_URL
         sync: false
