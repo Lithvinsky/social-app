@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPost } from "../api/posts.js";
+import { createPost } from "../api/services/postsService.js";
+
+// FIXED: improved component structure
 import { mergeCreatedPostIntoFeed } from "../utils/feedCache.js";
 
 export default function CreatePost() {

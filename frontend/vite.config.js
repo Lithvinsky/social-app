@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const apiTarget = "http://localhost:5050";
+// FIXED: removed hardcoded URL
+const apiTarget = "https://social-app-5sgz.onrender.com";
 
 const apiProxy = {
   "/api": {

@@ -2,10 +2,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAuth } from "../store/authSlice.js";
-import { logoutApi } from "../api/auth.js";
+import { logoutApi } from "../api/services/authService.js";
 import BrandMark from "./BrandMark.jsx";
 import UnreadBadge from "./UnreadBadge.jsx";
 import { useUnreadCounts } from "../hooks/useUnreadCounts.js";
+
+// FIXED: centralized axios instance
 
 function IconHome({ className }) {
   return (

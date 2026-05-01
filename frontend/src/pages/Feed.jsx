@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { fetchFeed } from "../api/posts.js";
+import { fetchFeed } from "../api/services/postsService.js";
+
+// FIXED: centralized axios instance
 import CreatePost from "../components/CreatePost.jsx";
 import PostCard from "../components/PostCard.jsx";
 

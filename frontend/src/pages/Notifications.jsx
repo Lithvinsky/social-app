@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 import {
   fetchNotifications,
   markNotificationsRead,
-} from "../api/notifications.js";
+} from "../api/services/notificationsService.js";
+
+// FIXED: centralized axios instance
 
 const typeCopy = {
   like: { icon: "♥", phrase: "liked your post" },

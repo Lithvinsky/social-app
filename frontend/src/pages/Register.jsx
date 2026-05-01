@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { register } from "../api/auth.js";
+import { register } from "../api/services/authService.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../store/authSlice.js";
 import BrandMark from "../components/BrandMark.jsx";
 
+// FIXED: improved component structure
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

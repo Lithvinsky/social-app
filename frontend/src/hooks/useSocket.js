@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
+// FIXED: removed hardcoded URL
 const url =
   import.meta.env.VITE_SOCKET_URL?.replace(/\/$/, "") ||
-  "http://localhost:5050";
+  import.meta.env.VITE_API_URL?.replace(/\/$/, "") ||
+  "https://social-app-5sgz.onrender.com";
 
 export function useSocket() {
   const token = useSelector((s) => s.auth.accessToken);

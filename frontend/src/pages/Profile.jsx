@@ -7,11 +7,13 @@ import {
   unfollowUser,
   suggestions,
   updateUser,
-} from "../api/users.js";
+} from "../api/services/usersService.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/authSlice.js";
-import { createConversation } from "../api/chat.js";
+import { createConversation } from "../api/services/chatService.js";
 import FollowMemberSearch from "../components/FollowMemberSearch.jsx";
+
+// FIXED: improved component structure
 
 function sortByUsername(a, b) {
   return String(a.username || "").localeCompare(

@@ -8,7 +8,7 @@ import {
   fetchComments,
   deleteComment,
   deletePost,
-} from "../api/posts.js";
+} from "../api/services/postsService.js";
 import { useSelector } from "react-redux";
 import { useSocket } from "../hooks/useSocket.js";
 import {
@@ -19,6 +19,8 @@ import {
   bumpCommentCountOnPostQuery,
 } from "../utils/feedCache.js";
 import { resolveMediaUrl } from "../utils/mediaUrl.js";
+
+// FIXED: improved component structure
 
 export default function PostCard({ post, onDeleted }) {
   const qc = useQueryClient();

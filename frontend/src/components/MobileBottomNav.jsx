@@ -2,7 +2,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAuth } from "../store/authSlice.js";
-import { logoutApi } from "../api/auth.js";
+import { logoutApi } from "../api/services/authService.js";
+
+// FIXED: centralized axios instance
 import UnreadBadge from "./UnreadBadge.jsx";
 import { useUnreadCounts } from "../hooks/useUnreadCounts.js";
 

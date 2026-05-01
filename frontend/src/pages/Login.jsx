@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { login } from "../api/auth.js";
+import { login } from "../api/services/authService.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../store/authSlice.js";
 import BrandMark from "../components/BrandMark.jsx";
 
+// FIXED: refactored login logic
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

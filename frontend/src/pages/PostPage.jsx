@@ -1,6 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getPost } from "../api/posts.js";
+import { getPost } from "../api/services/postsService.js";
+
+// FIXED: centralized axios instance
 import PostCard from "../components/PostCard.jsx";
 
 export default function PostPage() {

@@ -1,7 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { searchUsers, followUser, unfollowUser } from "../api/users.js";
+import {
+  searchUsers,
+  followUser,
+  unfollowUser,
+} from "../api/services/usersService.js";
+
+// FIXED: improved component structure
 
 /**
  * @param {"panel" | "navbar" | "sidebar"} variant

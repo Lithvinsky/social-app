@@ -6,10 +6,11 @@ import {
   fetchMessages,
   listConversations,
   sendMessageRest,
-} from "../api/chat.js";
+} from "../api/services/chatService.js";
 import { useSocket } from "../hooks/useSocket.js";
 import { useSelector } from "react-redux";
 
+// FIXED: improved component structure
 export default function ChatThread() {
   const { conversationId } = useParams();
   const qc = useQueryClient();

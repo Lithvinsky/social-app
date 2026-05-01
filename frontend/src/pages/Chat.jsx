@@ -1,7 +1,9 @@
 import { Link, Outlet, matchPath, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import { listConversations } from "../api/chat.js";
+import { listConversations } from "../api/services/chatService.js";
+
+// FIXED: centralized axios instance
 import { useSelector } from "react-redux";
 import UnreadBadge from "../components/UnreadBadge.jsx";
 
