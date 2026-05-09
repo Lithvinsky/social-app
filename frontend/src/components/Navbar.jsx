@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import UnreadBadge from "./UnreadBadge.jsx";
 import UserSearch from "./UserSearch.jsx";
+import BrandMark from "./BrandMark.jsx";
 import { useUnreadCounts } from "../hooks/useUnreadCounts.js";
 
 function IconChat({ className }) {
@@ -58,8 +59,9 @@ export default function Navbar() {
   if (!accessToken) {
     return (
       <header className="glass-header">
-        <div className="mx-auto flex max-w-6xl items-center justify-end gap-3 px-4 py-4">
-          <div className="flex items-center gap-2">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+          <BrandMark to="/" size="sm" />
+          <div className="flex shrink-0 items-center gap-2">
             <Link
               to="/login"
               className="text-sm font-medium text-orbit-muted hover:text-orbit-ink"

@@ -1,20 +1,25 @@
 import { Link } from "react-router-dom";
 
 const APP_NAME = "Orbit";
-/** Wordmark — use a transparent PNG in `public/orbit-logo.png` for best results on light UI. */
-const LOGO_SRC = "/orbit-logo.png";
+const LOGO_SRC = "/Orbit-logo.png";
 
-/** 3× prior sizes: md was ~h-7 / max-w 8.25rem → h-[5.25rem] / max-w-[24.75rem] (clamped on small screens). */
-function OrbitWordmark({ wrapClass, imgClass }) {
+/**
+ * Wordmark from `public/Orbit-logo.png`.
+ * `mix-blend-screen` hides solid black backdrops against light UI without an alpha channel.
+ * For pixel-perfect edges, replace the asset with a PNG that already has transparency.
+ */
+function OrbitWordmark({ wrapClass, imgClass, imgAlt }) {
   return (
     <span
-      className={`inline-flex items-center justify-center transition duration-200 ease-out group-hover/mark:opacity-95 ${wrapClass}`}
+      className={`inline-flex shrink-0 items-center justify-center transition duration-200 ease-out group-hover/mark:opacity-95 ${wrapClass}`}
     >
       <img
         src={LOGO_SRC}
-        alt={APP_NAME}
+        alt={imgAlt}
+        width={300}
+        height={100}
         decoding="async"
-        className={`object-contain object-center ${imgClass}`}
+        className={`block h-auto w-auto max-w-full object-contain object-center mix-blend-screen ${imgClass}`}
       />
     </span>
   );
@@ -31,34 +36,42 @@ export default function BrandMark({
   clickable = true,
 }) {
   const drop =
-    "drop-shadow-[0_2px_14px_rgba(106,79,191,0.22)] group-hover/mark:drop-shadow-[0_4px_22px_rgba(106,79,191,0.32)]";
+    "drop-shadow-[0_2px_14px_rgba(10,42,102,0.18)] group-hover/mark:drop-shadow-[0_4px_22px_rgba(10,42,102,0.26)]";
 
   const sizes = {
+    sm: {
+      layout: "row",
+      rowClass: "inline-flex max-w-full items-center",
+      wrap: "",
+      img: `${drop} h-10 max-h-10 max-w-[min(11rem,calc(100vw-10rem))] sm:h-11 sm:max-h-11`,
+    },
     md: {
       layout: "row",
       rowClass: "inline-flex min-w-0 max-w-full items-center",
       wrap: "",
-      img: `${drop} h-[5.25rem] w-auto max-h-[5.25rem] max-w-[min(24.75rem,calc(100vw-11rem))] sm:h-24 sm:max-h-24 sm:max-w-[min(27.75rem,calc(100vw-12rem))]`,
+      img: `${drop} h-[5.25rem] max-h-[5.25rem] max-w-[min(24.75rem,calc(100vw-11rem))] sm:h-24 sm:max-h-24 sm:max-w-[min(27.75rem,calc(100vw-12rem))]`,
     },
     lg: {
       layout: "row",
       rowClass: "inline-flex min-w-0 max-w-full items-center",
       wrap: "",
-      img: `${drop} h-[6.75rem] w-auto max-h-[6.75rem] max-w-[min(31.5rem,100%)] sm:h-[7.5rem] sm:max-h-[7.5rem] sm:max-w-[min(34.5rem,100%)]`,
+      img: `${drop} h-[6.75rem] max-h-[6.75rem] max-w-[min(31.5rem,100%)] sm:h-[7.5rem] sm:max-h-[7.5rem] sm:max-w-[min(34.5rem,100%)]`,
     },
     auth: {
       layout: "stacked",
       rowClass: "flex flex-col items-center gap-0",
       wrap: "",
-      img: `${drop} h-48 w-auto max-h-48 max-w-[min(95vw,36rem)] sm:h-[14.25rem] sm:max-h-[14.25rem] sm:max-w-[min(95vw,42rem)] md:h-[15.75rem] md:max-h-[15.75rem]`,
+      img: `${drop} h-48 max-h-48 max-w-[min(95vw,36rem)] sm:h-[14.25rem] sm:max-h-[14.25rem] sm:max-w-[min(95vw,42rem)] md:h-[15.75rem] md:max-h-[15.75rem]`,
     },
   };
 
   const s = sizes[size] || sizes.md;
 
+  const imgAlt = clickable && to ? "" : APP_NAME;
+
   const row = (
     <span className={`${s.rowClass} ${className}`}>
-      <OrbitWordmark wrapClass={s.wrap} imgClass={s.img} />
+      <OrbitWordmark wrapClass={s.wrap} imgClass={s.img} imgAlt={imgAlt} />
     </span>
   );
 
@@ -69,7 +82,7 @@ export default function BrandMark({
         : `inline-flex min-w-0 max-w-full rounded-xl ${linkClass}`;
 
     return (
-      <Link to={to} className={linkLayout}>
+      <Link to={to} className={linkLayout} aria-label={APP_NAME}>
         {row}
       </Link>
     );
