@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom";
 
 const APP_NAME = "Orbit";
-const LOGO_SRC = "/Orbit-logo.png";
+const LOGO_SRC = "/Orbit-logo-v2.png";
 
-/**
- * Wordmark from `public/Orbit-logo.png`.
- * `mix-blend-screen` hides solid black backdrops against light UI without an alpha channel.
- * For pixel-perfect edges, replace the asset with a PNG that already has transparency.
- */
+/** Wordmark from `public/Orbit-logo-v2.png` (transparent PNG). */
 function OrbitWordmark({ wrapClass, imgClass, imgAlt }) {
   return (
     <span
@@ -19,7 +15,7 @@ function OrbitWordmark({ wrapClass, imgClass, imgAlt }) {
         width={300}
         height={100}
         decoding="async"
-        className={`block h-auto w-auto max-w-full object-contain object-center mix-blend-screen ${imgClass}`}
+        className={`block h-auto w-auto max-w-full object-contain object-center ${imgClass}`}
       />
     </span>
   );
