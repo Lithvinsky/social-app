@@ -1,12 +1,9 @@
 import axios from "axios";
 import { store } from "../store/index.js";
 import { clearAuth, setAccessToken } from "../store/authSlice.js";
+import { resolveApiOrigin } from "../utils/apiOrigin.js";
 
-// FIXED: centralized axios instance
-// FIXED: updated API URL
-const API_ORIGIN = (
-  import.meta.env.VITE_API_URL || "https://social-app-5sgz.onrender.com"
-).replace(/\/$/, "");
+const API_ORIGIN = resolveApiOrigin();
 
 export function buildApiUrl(path = "") {
   const normalized = path.startsWith("/") ? path : `/${path}`;

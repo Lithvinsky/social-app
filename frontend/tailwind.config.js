@@ -18,37 +18,38 @@ export default {
       },
       colors: {
         surface: {
-          DEFAULT: "#F7F5FF",
-          muted: "#E8E4F5",
+          DEFAULT: "#F0F5FC",
+          muted: "#E2EAF5",
         },
+        /** Named historically; values are cool blues for gradients & accents */
         lavender: {
-          light: "#C7B8FF",
-          deep: "#BFA8FF",
-          mist: "#EDE8FF",
+          light: "#93C5FD",
+          deep: "#3B82F6",
+          mist: "#DBEAFE",
         },
         brand: {
-          DEFAULT: "#6A4FBF",
-          hover: "#5a42a8",
-          muted: "#8b6fd4",
-          deep: "#4A2F8C",
+          DEFAULT: "#1D4ED8",
+          hover: "#1E40AF",
+          muted: "#3B82F6",
+          deep: "#1E3A8A",
         },
         orbit: {
-          ink: "#2D1B4E",
-          muted: "#5C4A7A",
-          /** Lavender in theme PNG / wordmark (pairs with orbit-logo.png) */
-          glyph: "#B19CFF",
+          ink: "#0F172A",
+          muted: "#64748B",
+          /** Decorative glow / glyph tint (pairs with orbit-logo.png) */
+          glyph: "#38BDF8",
         },
       },
       boxShadow: {
-        soft: "0 1px 3px rgba(106, 79, 191, 0.08)",
-        card: "0 8px 32px rgba(106, 79, 191, 0.12)",
-        nav: "0 4px 24px rgba(74, 47, 140, 0.08)",
-        orbit: "0 12px 40px rgba(106, 79, 191, 0.18)",
-        glow: "0 0 0 1px rgba(255,255,255,0.5), 0 8px 32px rgba(106, 79, 191, 0.15)",
+        soft: "0 1px 3px rgba(30, 64, 175, 0.09)",
+        card: "0 8px 32px rgba(30, 64, 175, 0.14)",
+        nav: "0 4px 24px rgba(30, 58, 138, 0.09)",
+        orbit: "0 12px 40px rgba(30, 64, 175, 0.2)",
+        glow: "0 0 0 1px rgba(255,255,255,0.5), 0 8px 32px rgba(30, 64, 175, 0.16)",
       },
       backgroundImage: {
         "orbit-shine":
-          "radial-gradient(ellipse 100% 80% at 50% -30%, rgba(199, 184, 255, 0.55) 0%, transparent 55%)",
+          "radial-gradient(ellipse 100% 80% at 50% -30%, rgba(147, 197, 253, 0.45) 0%, transparent 55%)",
       },
     },
   },

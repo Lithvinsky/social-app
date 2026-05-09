@@ -1,6 +1,14 @@
-# Social app
+# Orbit (Social app)
 
-Full-stack social app (React + Vite frontend, Node/Express + MongoDB backend, Socket.IO). Market-style feed, posts, comments, DMs, notifications.
+Full-stack social app branded **Orbit**: React + Vite frontend, Node/Express + MongoDB backend, Socket.IO. Market-style feed, posts, comments, DMs, and notifications. UI uses a **darker blue** theme (see `frontend/tailwind.config.js`).
+
+## Tech stack
+
+| Layer    | Stack |
+|----------|--------|
+| Frontend | React, Vite, Tailwind CSS, Redux |
+| Backend  | Express, Mongoose, JWT + refresh cookies, Socket.IO |
+| Data     | MongoDB (local, Atlas, or Docker Compose) |
 
 ## Prerequisites
 
@@ -15,7 +23,7 @@ Full-stack social app (React + Vite frontend, Node/Express + MongoDB backend, So
    docker compose up -d
    ```
 
-   Or use your own `MONGODB_URI`.
+   Or use your own Atlas URI in `backend/.env` as `MONGO_URI`.
 
 2. **Backend env**
 
@@ -24,7 +32,13 @@ Full-stack social app (React + Vite frontend, Node/Express + MongoDB backend, So
    cp .env.example .env
    ```
 
-   Edit `.env`: set `MONGO_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET` (each at least 32 random characters), and optional `FINNHUB_*` / Cloudinary keys.
+   On Windows (PowerShell):
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   Edit `backend/.env`: set `MONGO_URI`, `JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET` (each at least 32 random characters). Optionally set Cloudinary vars for media uploads.
 
 3. **Install & run everything**
 
@@ -37,7 +51,7 @@ Full-stack social app (React + Vite frontend, Node/Express + MongoDB backend, So
    ```
 
    - API: [http://localhost:5050](http://localhost:5050) (`GET /health`)
-   - Web: [http://localhost:5174](http://localhost:5174)
+   - Web (Orbit): [http://localhost:5174](http://localhost:5174)
 
 4. **Optional demo data**
 
@@ -57,30 +71,57 @@ cd backend && npm install && npm run dev
 cd frontend && npm install && npm run dev
 ```
 
-## Frontend env
+## Project layout
 
-Copy `frontend/.env.example` to `frontend/.env` if needed. For local dev, the Vite proxy sends `/api` to the backend; keep `VITE_API_BASE` unset unless you call the API on another host.
+```text
+social-app/
+├── backend/          API + Socket.IO (PORT from .env, default 5050)
+├── frontend/         Orbit UI (Vite dev server on 5174)
+├── docker-compose.yml
+├── render.yaml       Optional Render.com Blueprint (API + static site)
+└── README.md
+```
 
-## Deploying the frontend to Vercel
+## Frontend environment variables
 
-Vercel only serves the **static** Vite build. It does **not** run the Node API and has **no** dev-server proxy, so the default `baseURL` of `/api` will call your Vercel domain and return **404** unless you point the app at a real API.
+Copy `frontend/.env.example` to `frontend/.env` when you need overrides.
 
-1. In Vercel: **Project → Settings → Environment Variables** (for **Production** and **Preview** as needed), set:
-   - `VITE_API_BASE` = your public API origin, e.g. `https://your-service.onrender.com` (no trailing slash)
-   - `VITE_SOCKET_URL` = same origin as the API (Socket.io)
-2. **Redeploy** after changing these (Vite reads them at build time).
-3. On the **API** server, set `CLIENT_ORIGIN` to your Vercel URL (e.g. `https://your-app.vercel.app`) and `REFRESH_COOKIE_SAMESITE=none` if the API and app are on different sites (HTTPS required for `none`).
+| Variable | When to set |
+|----------|-------------|
+| `VITE_API_URL` | Production / preview builds, or when the browser must call a **remote** API (full origin, **no** trailing slash). |
+| `VITE_SOCKET_URL` | Usually the **same** origin as the API for Socket.IO (e.g. Render URL). |
+| `VITE_PROXY_TARGET` | Local dev only: backend URL for the Vite proxy if not `http://127.0.0.1:5050`. |
 
-`frontend/vercel.json` adds a SPA rewrite so direct visits to client routes (e.g. `/login`) do not 404.
+- **Local dev (recommended):** Leave `VITE_API_URL` unset. The app uses same-origin `/api`; Vite proxies to `http://127.0.0.1:5050` (see `frontend/vite.config.js`), matching `backend/.env.example`.
+- **Legacy alias:** `VITE_API_BASE` is still read if `VITE_API_URL` is empty.
+
+## Deploying the frontend (Vercel)
+
+Vercel serves only the **static** build. There is no Node API and no dev proxy, so you must set API URLs at **build** time.
+
+1. **Vercel → Project → Settings → Environment Variables** (Production / Preview):
+   - `VITE_API_URL` = public API origin, e.g. `https://your-api.onrender.com` (no trailing slash)
+   - `VITE_SOCKET_URL` = same host as the API for Socket.IO
+2. **Redeploy** after any change (Vite bakes these in at build).
+3. On the **API**, set `CLIENT_ORIGIN` to your Vercel URL (e.g. `https://your-app.vercel.app`). If frontend and API are on different sites, set `REFRESH_COOKIE_SAMESITE=none` (HTTPS required).
+
+`frontend/vercel.json` rewrites unknown paths to `/` so client routes (e.g. `/login`) work on refresh.
+
+## Deploying with Render
+
+Use `render.yaml` as a Blueprint, or create services manually:
+
+- **Web service:** root `backend/`, `npm install`, `npm start`, health check `/health`
+- **Static site:** root `frontend/`, build `npm install && npm run build`, publish `dist`, with `VITE_API_URL` (and usually `VITE_SOCKET_URL`) pointing at your deployed API
 
 ## Troubleshooting
 
 | Issue | Fix |
 |--------|-----|
-| `MONGO_URI is required` | Create `backend/.env` with `MONGO_URI=...` |
+| `MONGO_URI is required` | Add `MONGO_URI=...` to `backend/.env` |
 | `JWT_*_SECRET` errors | Set both secrets in `backend/.env` (long random strings) |
-| API 401 after a while | Refresh cookie + `POST /auth/refresh` — use same origin (`/api` proxy) in dev |
-| Vercel: network errors, 404 on `/api/...` | Set `VITE_API_BASE` and `VITE_SOCKET_URL` in Vercel to your real API URL, then **rebuild**; see *Deploying the frontend to Vercel* |
-| Vercel: CORS or login refresh fails | On the API, set `CLIENT_ORIGIN` to your Vercel URL; `REFRESH_COOKIE_SAMESITE=none` when API and app are on different hosts |
+| API 401 after a while | Refresh uses cookies + `POST /api/auth/refresh` — in dev, keep the `/api` proxy so origins match |
+| Vercel: 404 on `/api/...` or wrong host | Set `VITE_API_URL` and `VITE_SOCKET_URL`, then rebuild |
+| Vercel: CORS or refresh cookie fails | Set `CLIENT_ORIGIN` on the API; `REFRESH_COOKIE_SAMESITE=none` when API and app differ |
 | Stuck on “Loading…” | Clear site data / `localStorage` for the app origin |
-| Image uploads fail | Set Cloudinary vars in `backend/.env` or post text-only |
+| Image uploads fail | Configure Cloudinary in `backend/.env` or post text-only |
