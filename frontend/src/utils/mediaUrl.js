@@ -1,10 +1,9 @@
 import { resolveApiOrigin } from "./apiOrigin.js";
 
 /**
- * Turn stored post `media[].url` into a browser-loadable URL.
- * - Cloudinary: already absolute https
- * - Local files in DB as `/uploads/...`:
- *   - With resolved API origin: `${base}/uploads/...`
+ * Resolve a stored URL for feed/post `media[]` (legacy) or similar absolute paths.
+ * - Absolute `https://…` URLs pass through
+ * - Paths like `/uploads/...` get the API origin prefixed when needed
  */
 export function resolveMediaUrl(url) {
   if (url == null || url === "") {

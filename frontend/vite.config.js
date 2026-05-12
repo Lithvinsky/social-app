@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/api/, ""),
     },
-    /** Local post images/videos when not using Cloudinary */
+    /** API-served static files under `backend/uploads` (legacy data, if any) */
     "/uploads": {
       target: apiTarget,
       changeOrigin: true,

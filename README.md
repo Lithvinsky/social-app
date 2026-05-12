@@ -38,7 +38,7 @@ Full-stack social app branded **Orbit**: React + Vite frontend, Node/Express + M
    Copy-Item .env.example .env
    ```
 
-   Edit `backend/.env`: set `MONGO_URI`, `JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET` (each at least 32 random characters). Optionally set Cloudinary vars for media uploads.
+   Edit `backend/.env`: set `MONGO_URI`, `JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET` (each at least 32 random characters). Optionally set Cloudinary vars if you use profile avatar uploads.
 
 3. **Install & run everything**
 
@@ -124,4 +124,4 @@ Use `render.yaml` as a Blueprint, or create services manually:
 | Vercel: 404 on `/api/...` or wrong host | Set `VITE_API_URL` and `VITE_SOCKET_URL`, then rebuild |
 | Vercel: CORS or refresh cookie fails | Set `CLIENT_ORIGIN` on the API; `REFRESH_COOKIE_SAMESITE=none` when API and app differ |
 | Stuck on “Loading…” | Clear site data / `localStorage` for the app origin |
-| Image uploads fail | Configure Cloudinary in `backend/.env` or post text-only |
+| Avatar upload ignored | Set `CLOUDINARY_*` in `backend/.env` and restart the API |

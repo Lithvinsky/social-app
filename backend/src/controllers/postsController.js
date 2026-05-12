@@ -5,7 +5,7 @@ import { User } from "../models/User.js";
 import { AppError } from "../utils/errors.js";
 import { sendOk } from "../utils/response.js";
 import { asyncHandler } from "../middleware/asyncHandler.js";
-import { uploadsRootDir } from "../utils/localMedia.js";
+import { destroyCloudinaryByPublicId } from "../utils/cloudinary.js";
 import fs from "fs";
 import path from "path";
 import { createNotification } from "../services/notificationService.js";
@@ -13,6 +13,10 @@ import {
   notifyFeedSubscribersOfAuthor,
   notifyPostWatchers,
 } from "../services/feedSocketService.js";
+
+function uploadsRootDir() {
+  return path.join(process.cwd(), "uploads");
+}
 
 export const createPost = asyncHandler(async (req, res) => {
   const { content } = req.body;
@@ -94,6 +98,18 @@ function unlinkLocalPostMedia(mediaList) {
   }
 }
 
+async function removeStoredPostMedia(mediaList) {
+  for (const m of mediaList || []) {
+    if (!m) continue;
+    const pid = typeof m.publicId === "string" ? m.publicId.trim() : "";
+    if (pid) {
+      await destroyCloudinaryByPublicId(pid, m.resourceType).catch(() => {});
+      continue;
+    }
+    unlinkLocalPostMedia([m]);
+  }
+}
+
 export const deletePost = asyncHandler(async (req, res) => {
   const postId = req.params.id;
   const post = await Post.findById(postId);
@@ -101,7 +117,7 @@ export const deletePost = asyncHandler(async (req, res) => {
   if (String(post.author) !== String(req.userId)) {
     throw new AppError("Forbidden", 403);
   }
-  unlinkLocalPostMedia(post.media);
+  await removeStoredPostMedia(post.media);
   await Promise.all([
     Comment.deleteMany({ post: postId }),
     Notification.deleteMany({ post: postId }),

@@ -1,7 +1,7 @@
 import { api, buildApiUrl, unwrap } from "../axios.js";
 
-// FIXED: centralized axios instance
-// FIXED: removed hardcoded URL
+// FIXED: centralized API paths
+// FIXED: improved component structure
 export async function createPost(body) {
   return unwrap(await api.post(buildApiUrl("/posts"), body));
 }
@@ -10,7 +10,7 @@ export async function fetchFeed({ pageParam = 1, limit = 10 }) {
   return unwrap(
     await api.get(buildApiUrl("/posts/feed"), {
       params: { page: pageParam, limit },
-    })
+    }),
   );
 }
 
@@ -34,7 +34,7 @@ export async function fetchComments(id, page = 1, limit = 20) {
   return unwrap(
     await api.get(buildApiUrl(`/posts/${id}/comments`), {
       params: { page, limit },
-    })
+    }),
   );
 }
 

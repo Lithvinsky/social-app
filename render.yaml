@@ -4,7 +4,7 @@
 # - In Render, set the repo *Root directory* to `social-app` if this lives in a monorepo.
 # - Deploy the API first, then set the static site build env (VITE_API_URL)
 #   to your public API URL (no trailing slash), and redeploy the static site.
-# - Use MongoDB Atlas for MONGO_URI; use Atlas + optional Cloudinary for file uploads on Render.
+# - Use MongoDB Atlas for MONGO_URI; optional Cloudinary for profile avatars on Render.
 
 version: 1
 services:

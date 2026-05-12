@@ -36,7 +36,7 @@ export default {
         orbit: {
           ink: "#0F172A",
           muted: "#64748B",
-          /** Decorative glow / glyph tint (pairs with orbit-logo.png) */
+          /** Decorative glow / glyph tint (pairs with brand assets in `public/`) */
           glyph: "#38BDF8",
         },
       },
